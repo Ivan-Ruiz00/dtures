@@ -3,13 +3,14 @@ const express=require("express");
 const app=express();
 const port=3000;
 const authRoutes=require("./routes/authentication");
+const pagosRoutes=require("./routes/pagos");
 const mongoose=require("mongoose");
 require("dotenv").config();
 
 app.use(parser.urlencoded({extended:false}));
 app.use(parser.json());
 
-app.use("/api",animalRoutes);
+app.use("/api",pagosRoutes);
 app.use("/api",authRoutes);
 app.use(express.json());
 

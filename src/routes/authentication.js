@@ -5,11 +5,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //Registro de usuarios
 router.post("/signup", async (req, res) => {
-    const { usuario, correo, clave } = req.body;
+    const { usuario, correo, clave, rol } = req.body;
     const user = new userSchema({
         usuario: usuario,
         correo: correo,
         clave: clave,
+        rol: rol,
     });
     user.clave = await user.encryptClave(user.clave);
     await user.save(); //save es un método de mongoose para guardar datos en MongoDB //segundo parámetro: un texto que hace que el código generado sea único //tercer parámetro: tiempo de expiración (en segundos, 24 horas en segundos)
