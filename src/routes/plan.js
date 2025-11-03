@@ -29,3 +29,10 @@ router.get(
             .catch((error) => res.json({ message: error }));
     }
 );
+
+router.get(
+    "/plan/igual/:pais", (req,res)=>{
+        let { pais } = req.params;
+        planSchema.find({pais:{$eq:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+    }
+);
