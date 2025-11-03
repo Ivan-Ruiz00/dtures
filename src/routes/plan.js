@@ -33,37 +33,53 @@ router.get(
 router.get(
     "/plan/igual/:pais", (req,res)=>{
         let { pais } = req.params;
-        planSchema.find({pais:{$eq:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+        planSchema
+            .find({ "destino.pais": { $eq: pais } })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
-    "/plan/in/:pais",verifyToken,(req,res)=>{
+    "/plan/in/:pais", (req, res) => {
         let { pais } = req.params;
-        planSchema.find({pais:{$in:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+        const paisList = pais.split(',').map((p) => p.trim()).filter(Boolean);
+        if (paisList.length === 0) return res.status(400).json({ message: 'No pais provided' });
+        planSchema
+            .find({ "destino.pais": { $in: paisList } })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
     }
 );
 
 router.put(
     "/plan/:id", (req, res) => {
         const { id } = req.params;
-        const update = {};
-        for (const key in req.body) {
-            if (Object.prototype.hasOwnProperty.call(req.body, key)) {
-                if (key === "_id") continue; // no permitir cambio de _id
-                update[key] = req.body[key];
+        function flatten(obj, parentKey = '', res = {}) {
+            for (const [key, value] of Object.entries(obj)) {
+                if (key === '_id') continue;
+                const prop = parentKey ? `${parentKey}.${key}` : key;
+                if (value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+                    flatten(value, prop, res);
+                } else {
+                    res[prop] = value;
+                }
             }
+            return res;
         }
-        if (Object.keys(update).length === 0) {
-            return res.status(400).json({ message: "No update data provided" });
+
+        const flat = flatten(req.body);
+        if (Object.keys(flat).length === 0) {
+            return res.status(400).json({ message: 'No update data provided' });
         }
-        pagoSchema
-            .updateOne({ _id: id }, { $set: update })
-            .then((data) => {
-                // data contiene info sobre matchedCount / modifiedCount según la versión de mongoose
-                return res.json(data);
+
+        planSchema
+            .findByIdAndUpdate(id, { $set: flat }, { new: true, runValidators: true })
+            .then((updated) => {
+                if (!updated) return res.status(404).json({ message: 'Plan not found' });
+                return res.json(updated);
             })
-            .catch((error) => res.status(500).json({ message: error }));
+            .catch((error) => res.status(500).json({ message: error.message || error }));
     }
 );
 
