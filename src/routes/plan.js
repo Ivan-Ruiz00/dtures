@@ -36,3 +36,10 @@ router.get(
         planSchema.find({pais:{$eq:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
     }
 );
+
+router.get(
+    "/plan/in/:pais",verifyToken,(req,res)=>{
+        let { pais } = req.params;
+        planSchema.find({pais:{$in:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+    }
+);
