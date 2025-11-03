@@ -1,4 +1,3 @@
-const e = require("express");
 const mongoose = require("mongoose");
 const planSchema = mongoose.Schema(
     {
@@ -310,3 +309,4 @@ const planSchema = mongoose.Schema(
         timestamps: true
     }
 );
+module.exports = mongoose.model('Plan', planSchema);

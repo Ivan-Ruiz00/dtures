@@ -4,6 +4,7 @@ const app=express();
 const port=3000;
 const authRoutes=require("./routes/authentication");
 const pagosRoutes=require("./routes/pago");
+const planRoutes=require("./routes/plan");
 const mongoose=require("mongoose");
 require("dotenv").config();
 
@@ -12,6 +13,7 @@ app.use(parser.json());
 
 app.use("/api",pagosRoutes);
 app.use("/api",authRoutes);
+app.use("/api",planRoutes);
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI).then(()=>console.log("Conexión exitosa")).catch((error)=>console.log(error));

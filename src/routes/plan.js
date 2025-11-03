@@ -1,29 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const pagoSchema = require("../models/pagoSchema");
+const planSchema = require("../models/planSchema");
 const verifyToken = require('./validate_token');
 
 router.post(
-    "/pago", (req, res) => {
-        let pago = new pagoSchema(req.body);
-        pago.save()
+    "/plan", (req, res) => {
+        let plan = new planSchema(req.body);
+        plan.save()
             .then((data) => res.json(data))
             .catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
-    "/pago", (req, res) => {
-        pagoSchema.find()
+    "/plan", (req, res) => {
+        planSchema.find()
             .then((data) => res.json(data))
             .catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
-    "/pago/:id", (req, res) => {
+    "/plan/:id", (req, res) => {
         const { id } = req.params;
-        pagoSchema
+        planSchema
             .findById(id)
             .then((data) => res.json(data))
             .catch((error) => res.json({ message: error }));
@@ -31,28 +31,21 @@ router.get(
 );
 
 router.get(
-    "/pago/igual/:cantidad", (req,res)=>{
-        let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$eq:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+    "/plan/igual/:pais", (req,res)=>{
+        let { pais } = req.params;
+        planSchema.find({pais:{$eq:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
     }
 );
 
 router.get(
-    "/pago/mayor-igual/:cantidad", (req,res)=>{
-        let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$gte:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
-    }
-);
-
-router.get(
-    "/pago/menor-igual/:cantidad", (req,res)=>{
-        let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$lte:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+    "/plan/in/:pais",verifyToken,(req,res)=>{
+        let { pais } = req.params;
+        planSchema.find({pais:{$in:pais}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
     }
 );
 
 router.put(
-    "/pago/:id", (req, res) => {
+    "/plan/:id", (req, res) => {
         const { id } = req.params;
         const update = {};
         for (const key in req.body) {
@@ -75,9 +68,9 @@ router.put(
 );
 
 router.delete(
-    "/pago/:id", (req, res) => {
+    "/plan/:id", (req, res) => {
         const { id } = req.params;
-        pagoSchema
+        planSchema
             .findByIdAndDelete(id)
             .then((data) => {
                 res.json(data);

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router(); //manejador de rutas de express
-const userSchema = require("../models/user");
+const userSchema = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //Registro de usuarios
