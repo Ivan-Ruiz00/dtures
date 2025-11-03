@@ -31,23 +31,23 @@ router.get(
 );
 
 router.get(
-    "/pago/igual/:cantidad", (req,res)=>{
+    "/pago/igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$eq:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+        pagoSchema.find({ cantidad: { $eq: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
-    "/pago/mayor-igual/:cantidad", (req,res)=>{
+    "/pago/mayor-igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$gte:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+        pagoSchema.find({ cantidad: { $gte: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
-    "/pago/menor-igual/:cantidad", (req,res)=>{
+    "/pago/menor-igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({cantidad:{$lte:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+        pagoSchema.find({ cantidad: { $lte: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
     }
 );
 
@@ -87,5 +87,6 @@ router.delete(
             });
     }
 );
+
 
 module.exports = router;
