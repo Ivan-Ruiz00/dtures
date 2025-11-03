@@ -33,21 +33,37 @@ router.get(
 router.get(
     "/pago/igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({ cantidad: { $eq: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
+        const num = Number(cantidad);
+        if (Number.isNaN(num)) return res.status(400).json({ message: "cantidad must be a number" });
+        // Buscar el campo anidado transaccion.cantidad (el schema guarda la cantidad ahí)
+        pagoSchema
+            .find({ "transaccion.cantidad": { $eq: num } })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
     "/pago/mayor-igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({ cantidad: { $gte: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
+        const num = Number(cantidad);
+        if (Number.isNaN(num)) return res.status(400).json({ message: "cantidad must be a number" });
+        pagoSchema
+            .find({ "transaccion.cantidad": { $gte: num } })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
     }
 );
 
 router.get(
     "/pago/menor-igual/:cantidad", (req, res) => {
         let { cantidad } = req.params;
-        pagoSchema.find({ cantidad: { $lte: cantidad } }).then((data) => res.json(data)).catch((error) => res.json({ message: error }));
+        const num = Number(cantidad);
+        if (Number.isNaN(num)) return res.status(400).json({ message: "cantidad must be a number" });
+        pagoSchema
+            .find({ "transaccion.cantidad": { $lte: num } })
+            .then((data) => res.json(data))
+            .catch((error) => res.json({ message: error }));
     }
 );
 
