@@ -30,4 +30,11 @@ router.get(
     }
 );
 
+router.get(
+    "/pago/igual/:cantidad", (req,res)=>{
+        let { cantidad } = req.params;
+        pagoSchema.find({cantidad:{$eq:cantidad}}).then((data)=>res.json(data)).catch((error)=>res.json({message:error}));
+    }
+);
+
 module.exports = router;
