@@ -3,7 +3,7 @@ const express=require("express");
 const app=express();
 const port=3000;
 const authRoutes=require("./routes/authentication");
-const pagosRoutes=require("./routes/pagos");
+const pagosRoutes=require("./routes/pago");
 const mongoose=require("mongoose");
 require("dotenv").config();
 
