@@ -66,3 +66,19 @@ router.put(
             .catch((error) => res.status(500).json({ message: error }));
     }
 );
+
+router.delete(
+    "/plan/:id", (req, res) => {
+        const { id } = req.params;
+        planSchema
+            .findByIdAndDelete(id)
+            .then((data) => {
+                res.json(data);
+            })
+            .catch((error) => {
+                res.json({ message: error });
+            });
+    }
+);
+
+module.exports = router;
