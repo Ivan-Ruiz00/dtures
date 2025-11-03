@@ -74,4 +74,18 @@ router.put(
     }
 );
 
+router.delete(
+    "/pago/:id", (req, res) => {
+        const { id } = req.params;
+        pagoSchema
+            .findByIdAndDelete(id)
+            .then((data) => {
+                res.json(data);
+            })
+            .catch((error) => {
+                res.json({ message: error });
+            });
+    }
+);
+
 module.exports = router;
