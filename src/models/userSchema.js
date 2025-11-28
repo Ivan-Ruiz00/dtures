@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"); // importando el componente mongoose
-const bcrypt = require("bcrypt"); // importando el componente bcrypt
+const mongoose = require("mongoose"); 
+const bcrypt = require("bcrypt"); 
 const userSchema = mongoose.Schema(
     {
         usuario: {
